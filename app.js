@@ -9,16 +9,7 @@ close.addEventListener("click", function(e) {
 
 
 
-
-
-
-
-
-
-
-
-
-
+//Return first letter uppercase
 var toTitleCase = function (str) {
 	str = str.toLowerCase().split(' ');
 	for (var i = 0; i < str.length; i++) {
@@ -26,6 +17,8 @@ var toTitleCase = function (str) {
 	}
 	return str.join(' ');
 };
+
+
 
 function overlaHTML() {
   $('.modal-window .mem-img').removeClass( "mem-img" );
@@ -37,7 +30,6 @@ function overlaHTML() {
   $('.right-arrow').show();
   $('.left-arrow').show();
   $('.arrows').show();
-  $('.mem-item .arrows').hide();
   $('.mem-item .mem-info').hide();
 }
 
@@ -88,8 +80,7 @@ function overlaHTML() {
       let modelItems = document.querySelectorAll(".mem-item");
       let arrowLeft = document.querySelector(".left-arrow");
       let arrowRight = document.querySelector(".right-arrow");
-      let index = 0;
-      let modelItemsLength = modelItems.length -1;
+
 
 
 // Filtering names
@@ -120,7 +111,6 @@ function overlaHTML() {
 
 
 
-
 // Pop up overlay window
       $(".mem-item").on( "click", function (e) {
         $('.overlay-window').show();
@@ -128,28 +118,36 @@ function overlaHTML() {
          overlaHTML();
       });
 
-//Change content
-      function toMove(n) {
-        index += n;
-        if (index > modelItemsLength) {
-              index = 0;
+
+let num = 0;
+let modelItemsLength = modelItems.length;
+
+//To move back and forth between employee detail
+      function next() {
+        num++;
+        if (num >= modelItemsLength) {
+              num = 0;
         }
 
-        if (index < 0) {
-           index = modelItemsLength;
-        }
-
-       $('.modal-window').html(modelItems[index].innerHTML);
+       $('.modal-window').html(modelItems[num].innerHTML);
            overlaHTML();
       }
 
-        arrowRight.addEventListener("click", function () {
-            toMove(1);
-        });
+     function prev() {
+       num--;
+       if (num <= 0) {
+          num = modelItemsLength -1;
+       }
+       $('.modal-window').html(modelItems[num].innerHTML);
+           overlaHTML();
+      }
 
-        arrowLeft.addEventListener("click", function () {
-            toMove(- 1);
-        });
+      arrowRight.addEventListener("click", function() {
+           next();
+      });
 
-    }
+      arrowLeft.addEventListener("click", function () {
+          prev();
+      });
+     }
   });
