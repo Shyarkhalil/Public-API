@@ -1,7 +1,7 @@
 
 const close = document.querySelector(".close-error");
 const overlayWindow = document.querySelector(".overlay-window");
-
+let index = 0;
 
 close.addEventListener("click", function(e) {
   overlayWindow.style.display = "none";
@@ -111,44 +111,50 @@ function overlaHTML() {
 
 
 
-// Pop up overlay window
+//Pop up overlay window
       $(".mem-item").on( "click", function (e) {
         $('.overlay-window').show();
         $('.modal-window').html(this.innerHTML);
          overlaHTML();
-      });
+         console.log($(".mem-item").index(this));
+
+        let itemIndex = $(".mem-item").index(this);
+         let index = itemIndex;
+         let modelItemsLength = modelItems.length;
+
+         //To move back and forth between employee detail
+               function next() {
+                 index++;
+                 if (index >= modelItemsLength) {
+                       index = 0;
+                 }
+
+                $('.modal-window').html(modelItems[index].innerHTML);
+                    overlaHTML();
+                    console.log(index);
+               }
+
+              function prev() {
+                index--;
+                if (index <= 0) {
+                   index = modelItemsLength -1;
+                }
+                $('.modal-window').html(modelItems[index].innerHTML);
+                    overlaHTML();
+                    console.log(index);
+               }
+
+               arrowRight.addEventListener("click", function() {
+                    next();
+               });
+
+               arrowLeft.addEventListener("click", function () {
+                   prev();
+               });
+      }); //end of function
 
 
 
-let num = 0;
-let modelItemsLength = modelItems.length;
 
-//To move back and forth between employee detail
-      function next() {
-        num++;
-        if (num >= modelItemsLength) {
-              num = 0;
-        }
-
-       $('.modal-window').html(modelItems[num].innerHTML);
-           overlaHTML();
-      }
-
-     function prev() {
-       num--;
-       if (num <= 0) {
-          num = modelItemsLength -1;
-       }
-       $('.modal-window').html(modelItems[num].innerHTML);
-           overlaHTML();
-      }
-
-      arrowRight.addEventListener("click", function() {
-           next();
-      });
-
-      arrowLeft.addEventListener("click", function () {
-          prev();
-      });
      }
   });
