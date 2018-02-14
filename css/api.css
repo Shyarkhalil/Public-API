@@ -50,7 +50,16 @@ input[type="search"] {
   border-radius: 8px;
   transition: box-shadow .3s, transform .3s;
   cursor: pointer;
+  opacity: 0;
+  transform: translateX(20px);
+  transition: all 0.3s ease-in-out;
 }
+
+.is-showing {
+  opacity: 1;
+  transform: translateX(0);
+}
+
 
 .mem-item:hover {
   box-shadow: -1px 4px 20px 0px rgba(135, 0, 0, 0.91);

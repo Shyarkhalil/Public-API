@@ -122,7 +122,7 @@ function overlaHTML() {
          let index = itemIndex;
          let modelItemsLength = modelItems.length;
 
-         //To move back and forth between employee detail
+//To move back and forth between employee detail
                function next() {
                  index++;
                  if (index >= modelItemsLength) {
@@ -156,5 +156,22 @@ function overlaHTML() {
 
 
 
+     }
+  });
+
+
+
+
+
+  $(window).scroll(function() {
+     var wScroll = $(this).scrollTop();
+     if (wScroll > $(".mem-item").offset().top - 1000) {
+          console.log("hi");
+          $(".mem-item").each(function(i) {
+          setTimeout(function(){
+            $(".mem-item").eq(i).addClass("is-showing");
+          }, 150 * (i+1));
+
+          });
      }
   });
