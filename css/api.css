@@ -12,7 +12,7 @@ body{
 div a {
   text-decoration: none;
   color: #000;
-  font-size: .84rem;
+  font-size: .70rem;
 }
 
 .search h1 {
@@ -252,6 +252,9 @@ li {
   }
   .close-error {
     left: 330px;
+  }
+  div a {
+    font-size: .84rem;
   }
 }
 
