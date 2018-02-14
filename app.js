@@ -53,7 +53,7 @@ function overlaHTML() {
         apiHTML+= '<div class="mem-mail">';
         apiHTML+= '<p class="mem-name">'+toTitleCase(resultsData.name.first)+' '+toTitleCase(resultsData.name.last)+'</p>';
         apiHTML+= '<div>';
-        apiHTML+= '<a href="'+resultsData.email+'">'+resultsData.email+'</a>';
+        apiHTML+= '<a href="mailto:'+resultsData.email+'">'+resultsData.email+'</a>';
         apiHTML+= '</div>';
         apiHTML+= '<p class="city-data">'+toTitleCase(resultsData.location.city)+'</p>';
         apiHTML+= '</div>';
