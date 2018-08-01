@@ -42,7 +42,7 @@ function overlaHTML() {
       let apiHTML = '<div class="new-mem">';
       for (var i = 0; i < data.results.length; i++) {
         let resultsData = data.results[i];
-        let firstDate = resultsData.dob.substr(0, resultsData.dob.length-9);
+        let firstDate = resultsData.dob;
         apiHTML+= '<div class="mem-item">';
 
 
