@@ -1,30 +1,18 @@
+const close = document.querySelector('.close-error');
+const overlayWindow = document.querySelector('.overlay-window');
+// let index = 0;
 
-const close = document.querySelector(".close-error");
-const overlayWindow = document.querySelector(".overlay-window");
-let index = 0;
-
-close.addEventListener("click", function(e) {
-  overlayWindow.style.display = "none";
+close.addEventListener('click', function(e) {
+  overlayWindow.style.display = 'none';
 });
 
-
-
-//Return first letter uppercase
-var toTitleCase = function (str) {
-	str = str.toLowerCase().split(' ');
-	for (var i = 0; i < str.length; i++) {
-		str[i] = str[i].charAt(0).toUpperCase() + str[i].slice(1);
-	}
-	return str.join(' ');
-};
-
-
-
-function overlaHTML() {
-  $('.modal-window .mem-img').removeClass( "mem-img" );
-  $('.modal-window .mem-mail').removeClass( "mem-mail" );
-  $('.modal-window .mem-name').removeClass( "mem-name" );
-  $( ".modal-window div p" ).first().addClass("bold");
+function overlayHTML() {
+  $('.modal-window .mem-img').removeClass('mem-img');
+  $('.modal-window .mem-mail').removeClass('mem-mail');
+  $('.modal-window .mem-name').removeClass('mem-name');
+  $('.modal-window div p')
+    .first()
+    .addClass('bold');
   $('.mem-info').show();
   $('.close-error').show();
   $('.right-arrow').show();
@@ -32,146 +20,105 @@ function overlaHTML() {
   $('.arrows').show();
   $('.mem-item .mem-info').hide();
 }
+let apiHTML = '<div class="new-mem">';
 
+$.ajax({
+  url: 'https://randomuser.me/api/?results=12&nat=gb,us,au&noinfo',
+  dataType: 'json',
+  success: buildDom,
+});
 
+function buildDom(data) {
+  data.results.forEach(user => {
+    const resultsData = user;
+    const firstDate = resultsData.dob;
+    apiHTML += '<div class="mem-item">';
 
-  $.ajax({
-    url: 'https://randomuser.me/api/?results=12&nat=gb,us,au&noinfo',
-    dataType: 'json',
-    success: function(data) {
-      let apiHTML = '<div class="new-mem">';
-      for (var i = 0; i < data.results.length; i++) {
-        let resultsData = data.results[i];
-        let firstDate = resultsData.dob;
-        apiHTML+= '<div class="mem-item">';
+    apiHTML += '<div class="mem-img">';
+    apiHTML += '<img src="' + resultsData.picture.large + '">';
+    apiHTML += '</div>';
 
+    apiHTML += '<div class="mem-mail">';
+    apiHTML +=
+      '<p class="mem-name">' + resultsData.name.first + ' ' + resultsData.name.last + '</p>';
+    apiHTML += '<div>';
+    apiHTML += '<a href="mailto:' + resultsData.email + '">' + resultsData.email + '</a>';
+    apiHTML += '</div>';
+    apiHTML += '<p class="city-data">' + resultsData.location.city + '</p>';
+    apiHTML += '</div>';
+    apiHTML += '<div class="mem-info">';
+    apiHTML += '<ul>';
+    apiHTML += '<li>' + resultsData.cell + '</li>';
+    apiHTML +=
+      '<li> ' +
+      resultsData.location.street +
+      '' +
+      resultsData.location.state +
+      ' ' +
+      resultsData.location.postcode +
+      ' </li>';
+    apiHTML += '<li>Birthday: ' + firstDate + '</li>';
+    apiHTML += '</ul>';
+    apiHTML += '</div>';
 
-        apiHTML+= '<div class="mem-img">';
-        apiHTML+= '<img src="'+resultsData.picture.large+'">';
-        apiHTML+= '</div>';
+    apiHTML += '</div>';
+  }); // end
 
-        apiHTML+= '<div class="mem-mail">';
-        apiHTML+= '<p class="mem-name">'+toTitleCase(resultsData.name.first)+' '+toTitleCase(resultsData.name.last)+'</p>';
-        apiHTML+= '<div>';
-        apiHTML+= '<a href="mailto:'+resultsData.email+'">'+resultsData.email+'</a>';
-        apiHTML+= '</div>';
-        apiHTML+= '<p class="city-data">'+toTitleCase(resultsData.location.city)+'</p>';
-        apiHTML+= '</div>';
-        apiHTML+= '<div class="mem-info">';
-        apiHTML+='<ul>';
-        apiHTML+= '<li>'+resultsData.cell+'</li>';
-        apiHTML+= '<li> '+toTitleCase(resultsData.location.street)+''+toTitleCase(resultsData.location.state)+' '+resultsData.location.postcode+' </li>';
-        apiHTML+= '<li>Birthday: '+firstDate+'</li>';
-        apiHTML+='</ul>';
-        apiHTML+= '</div>';
+  apiHTML += '</div>';
+  $('.members').html(apiHTML);
 
+  let modelItems = document.querySelectorAll('.mem-item');
+  let arrowLeft = document.querySelector('.left-arrow');
+  let arrowRight = document.querySelector('.right-arrow');
 
+  // Filtering names
+  let memName = document.querySelectorAll('.mem-name');
+  let form = document.getElementById('search');
 
-        apiHTML+= '</div>';
+  form.addEventListener('keyup', e => {
+    e.preventDefault();
+    const formValue = form.value.toLowerCase();
+    modelItems.forEach((user, i) => {
+      if (memName[i].innerHTML.toLowerCase().indexOf(formValue) > -1) {
+        user.style.display = '';
+      } else {
+        user.style.display = 'none';
+      }
+    });
+  });
+
+  //Pop up overlay window
+  $('.mem-item').on('click', function(e) {
+    $('.overlay-window').show();
+    $('.modal-window').html(this.innerHTML);
+    overlayHTML();
+    let itemIndex = $('.mem-item').index(this);
+    //To move back and forth between employee detail
+    function next() {
+      itemIndex++;
+      if (itemIndex >= modelItems.length) {
+        itemIndex = 0;
       }
 
-      apiHTML+= '</div>';
-      $('.members').html(apiHTML);
+      $('.modal-window').html(modelItems[itemIndex].innerHTML);
+      overlayHTML();
+    }
 
+    function prev() {
+      itemIndex--;
+      if (itemIndex <= 0) {
+        itemIndex = modelItemsLength - 1;
+      }
+      $('.modal-window').html(modelItems[itemIndex].innerHTML);
+      overlayHTML();
+    }
 
+    arrowRight.addEventListener('click', function() {
+      next();
+    });
 
-
-      let modalWindow = document.querySelector(".modal-window");
-      let modelItems = document.querySelectorAll(".mem-item");
-      let arrowLeft = document.querySelector(".left-arrow");
-      let arrowRight = document.querySelector(".right-arrow");
-
-
-
-// Filtering names
-      let memName = document.querySelectorAll(".mem-name");
-      let form = document.getElementById('search');
-
-      form.addEventListener("keyup", function(e){
-        e.preventDefault();
-        let formValue = form.value.toUpperCase();
-        for (var i = 0; i < memName.length; i++) {
-          //If matched
-          for (var i = 0; i < modelItems.length; i++) {
-            if (memName[i].innerHTML.toUpperCase().indexOf(formValue) >= 0) {
-                modelItems[i].style.display = "flex";
-            } else {
-                 modelItems[i].style.display = "none";
-            }
-          }
-
-        }
-
-
-
-      });
-
-
-
-
-
-
-//Pop up overlay window
-      $(".mem-item").on( "click", function (e) {
-        $('.overlay-window').show();
-        $('.modal-window').html(this.innerHTML);
-         overlaHTML();
-         console.log($(".mem-item").index(this));
-
-        let itemIndex = $(".mem-item").index(this);
-         let index = itemIndex;
-         let modelItemsLength = modelItems.length;
-
-//To move back and forth between employee detail
-               function next() {
-                 index++;
-                 if (index >= modelItemsLength) {
-                       index = 0;
-                 }
-
-                $('.modal-window').html(modelItems[index].innerHTML);
-                    overlaHTML();
-                    console.log(index);
-               }
-
-              function prev() {
-                index--;
-                if (index <= 0) {
-                   index = modelItemsLength -1;
-                }
-                $('.modal-window').html(modelItems[index].innerHTML);
-                    overlaHTML();
-                    console.log(index);
-               }
-
-               arrowRight.addEventListener("click", function() {
-                    next();
-               });
-
-               arrowLeft.addEventListener("click", function () {
-                   prev();
-               });
-      }); //end of function
-
-
-
-
-     }
-  });
-
-
-
-
-
-  $(window).scroll(function() {
-     var wScroll = $(this).scrollTop();
-     if (wScroll > $(".mem-item").offset().top - 1000) {
-          console.log("hi");
-          $(".mem-item").each(function(i) {
-          setTimeout(function(){
-            $(".mem-item").eq(i).addClass("is-showing");
-          }, 150 * (i+1));
-
-          });
-     }
-  });
+    arrowLeft.addEventListener('click', function() {
+      prev();
+    });
+  }); //end of function
+}
