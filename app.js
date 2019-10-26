@@ -1,6 +1,5 @@
 const close = document.querySelector('.close-error');
 const overlayWindow = document.querySelector('.overlay-window');
-// let index = 0;
 
 close.addEventListener('click', function(e) {
   overlayWindow.style.display = 'none';
