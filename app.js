@@ -19,13 +19,14 @@ function overlayHTML() {
   $('.arrows').show();
   $('.mem-item .mem-info').hide();
 }
-let apiHTML = '<div class="new-mem">';
 
 $.ajax({
   url: 'https://randomuser.me/api/?results=12&nat=gb,us,au&noinfo',
   dataType: 'json',
   success: buildDom,
 });
+
+let apiHTML = '<div class="new-mem">';
 
 function buildDom(data) {
   data.results.forEach(user => {
