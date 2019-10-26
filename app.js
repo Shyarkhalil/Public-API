@@ -67,13 +67,13 @@ function buildDom(data) {
   apiHTML += '</div>';
   $('.members').html(apiHTML);
 
-  let modelItems = document.querySelectorAll('.mem-item');
-  let arrowLeft = document.querySelector('.left-arrow');
-  let arrowRight = document.querySelector('.right-arrow');
+  const modelItems = document.querySelectorAll('.mem-item');
+  const arrowLeft = document.querySelector('.left-arrow');
+  const arrowRight = document.querySelector('.right-arrow');
 
   // Filtering names
-  let memName = document.querySelectorAll('.mem-name');
-  let form = document.getElementById('search');
+  const memName = document.querySelectorAll('.mem-name');
+  const form = document.getElementById('search');
 
   form.addEventListener('keyup', e => {
     e.preventDefault();
